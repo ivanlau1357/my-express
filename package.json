@@ -20,6 +20,8 @@
   },
   "homepage": "https://github.com/ivanlau1357/node-express-basic#readme",
   "dependencies": {
+    "axios": "^0.21.1",
+    "bluebird": "^3.7.2",
     "dotenv": "^10.0.0",
     "eslint": "^7.26.0",
     "eslint-config-airbnb-base": "^14.2.0",
