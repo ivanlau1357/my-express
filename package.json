@@ -1,0 +1,31 @@
+{
+  "name": "express-basic",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon app.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "node_modules/.bin/eslint .",
+    "asyncConsole": "node --experimental-repl-await ./asyncConsole.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ivanlau1357/node-express-basic.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ivanlau1357/node-express-basic/issues"
+  },
+  "homepage": "https://github.com/ivanlau1357/node-express-basic#readme",
+  "dependencies": {
+    "dotenv": "^10.0.0",
+    "eslint": "^7.26.0",
+    "eslint-config-airbnb-base": "^14.2.0",
+    "eslint-plugin-import": "^2.22.0",
+    "express": "^4.17.1",
+    "nodemon": "^2.0.4",
+    "winston": "^3.3.3"
+  }
+}
