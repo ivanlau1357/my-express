@@ -6,7 +6,6 @@ class HealthController {
     }
     static async healthService(req, res) {
       const healthMsg = await HealthService.getHealthServiceMsg();
-      console.log('healthMsg----------', healthMsg);
       return res.status(200).send(healthMsg)
     }
     

@@ -13,9 +13,14 @@ class StockService {
         
         const stocksRes = await Promise.map(stocks, async(stock) => {
             const stockKey = this.stockKeyMapper(stock);
-            console.log('stockkey', stockKey);
-            const stockInfo = await CryptonatorService.getStockInfo(stockKey)
-            return stockInfo
+            const stockTicker = await CryptonatorService.getStockInfo(stockKey)   
+            return {
+                [stock]: {
+                    price: stockTicker?.price,
+                    volume: stockTicker?.volume,
+                    change: stockTicker?.change
+                }
+            }        
         })
       
       return stocksRes
@@ -37,8 +42,6 @@ class StockService {
         return map[stock]
 
     }
-
-    
   }
   
 module.exports = StockService

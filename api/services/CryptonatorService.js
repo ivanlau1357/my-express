@@ -11,20 +11,17 @@ class CryptonatorService {
                 }
             });
 
-            console.log(stock);
-
             const res = await axios.get(`https://api.cryptonator.com/api/ticker/${stock}-usd`)
 
             logger.log('info', {
                 category: 'CryptonatorService',
                 payload: {
+                    res: res?.data?.ticker,
                     stage: 'DidGetStockInfo',
                 }
             });
 
-            console.log('res----------', res.data);
-
-            return res.data
+            return res?.data?.ticker
 
         }catch(err) {
             logger.log('error', {
@@ -33,6 +30,7 @@ class CryptonatorService {
                     stage: 'Error - GetStockInfo',
                 }
             });
+            return [];
         }
     
     }

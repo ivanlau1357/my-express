@@ -6,14 +6,15 @@ class StockController {
         logger.log('info', {
             category: 'StockController',
             payload: {
-                // request: req,
+                query: req?.query,
                 stage: 'DoFetchStockPrice',
             }
         });
-        //const { stocks } = req.query;
-        const stocks = ['bitcoin'];
+        const { stocks } = req?.query;
         const result = await StockService.getStockPrice(stocks);
-        return res.status(200).send(result || {});
+        return res.status(200).send({
+            data: result
+        });
     }
     
   }
