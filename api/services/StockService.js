@@ -15,11 +15,10 @@ class StockService {
             const stockKey = this.stockKeyMapper(stock);
             const stockTicker = await CryptonatorService.getStockInfo(stockKey)   
             return {
-                [stock]: {
-                    price: stockTicker?.price,
-                    volume: stockTicker?.volume,
-                    change: stockTicker?.change
-                }
+                name: stock,
+                price: stockTicker?.price,
+                volume: stockTicker?.volume,
+                change: stockTicker?.change
             }        
         })
       

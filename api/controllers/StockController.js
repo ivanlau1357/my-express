@@ -12,11 +12,11 @@ class StockController {
         });
         const { stocks } = req?.query;
         const result = await StockService.getStockPrice(stocks);
-        return res.status(200).send({
-            data: result
-        });
+        res.header("Access-Control-Allow-Origin", "*");
+        return res.status(200).send(result);
     }
     
+
   }
   
 module.exports = StockController
