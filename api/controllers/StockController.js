@@ -13,7 +13,7 @@ class StockController {
         const { stocks } = req?.query;
         
         if(!stocks || !stocks.length) {
-            return res.status(404).send('stocks must be exists')
+            return res.status(404).send({ error: 'stocks must be exists' })
         }
 
         const result = await StockService.getStockPrice(Array.isArray(stocks) ? stocks : [stocks]);
