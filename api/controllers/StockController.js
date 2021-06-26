@@ -11,7 +11,12 @@ class StockController {
             }
         });
         const { stocks } = req?.query;
-        const result = await StockService.getStockPrice(stocks);
+        
+        if(!stocks || !stocks.length) {
+            return res.status(404).send({ error: 'stocks must be exists' })
+        }
+
+        const result = await StockService.getStockPrice(Array.isArray(stocks) ? stocks : [stocks]);
         res.header("Access-Control-Allow-Origin", "*");
         return res.status(200).send(result);
     }

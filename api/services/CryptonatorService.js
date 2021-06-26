@@ -30,7 +30,7 @@ class CryptonatorService {
                     stage: 'Error - GetStockInfo',
                 }
             });
-            return [];
+            return null;
         }
     
     }

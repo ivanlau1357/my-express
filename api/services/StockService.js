@@ -7,13 +7,25 @@ class StockService {
         logger.log('info', {
             category: 'StockService',
             payload: {
+                stocks,
                 stage: 'DoGetStockPrice',
             }
         });
         
         const stocksRes = await Promise.map(stocks, async(stock) => {
             const stockKey = this.stockKeyMapper(stock);
-            const stockTicker = await CryptonatorService.getStockInfo(stockKey)   
+            const stockTicker = await CryptonatorService.getStockInfo(stockKey)
+
+            if(!stockTicker) {
+                const defaultCase = await CryptonatorService.getStockInfo('btc');
+                return {
+                    name: 'bitcoin',
+                    price: defaultCase?.price,
+                    volume: defaultCase?.volume,
+                    change: defaultCase?.change
+                }
+            }
+
             return {
                 name: stock,
                 price: stockTicker?.price,
