@@ -7,9 +7,11 @@ services:
       - /app/node_modules
     ports:
       - "5000:5000"
+    environment:
+      DB_HOST: "mongodb://poll:poll@mongo:27017/poll?authSource=poll"
     command: bash -c "nodemon app.js"
 
-  mongo:
+  mongo: 
     image: "mongo"
     ports:
       - "27017:27017"
@@ -23,4 +25,4 @@ services:
 
 volumes:
   mongodb:
-    driver: localhost
+    driver: local
