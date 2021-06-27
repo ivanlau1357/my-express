@@ -1,10 +1,11 @@
-# node-express-stock
+# node-express-api
 
 This Project is using below technology
  
  1.  node.js
  2.  express
  3.  docker
+ 4.  mongoDB
 
 To start this project, you can choose to use local or docker
 
@@ -16,9 +17,37 @@ To start this project, you can choose to use local or docker
   ```
   docker:
   ```
-  1. please run npm install before you start the project
-  2. run docker-compose build
-  3. run docker-compose -p stock up -d
+  1. run docker-compose build
+  2. run docker-compose -p stock up -d
+               or
+  1. directly docker-compose up
+  ```
+
+  mongoDB:
+  ```
+  1. After you start the docker, please use below comment to access mongoDB
+      docker exec -it [Container ID] bash
+  2. Access mongoDB
+      mongo
+  3. Plz create user for access mongoDB
+      use poll
+      db.createUser(
+        {
+          user: "poll",
+          pwd: "poll",
+          roles: [ "readWrite", "dbAdmin" ]
+        }
+      )
+      ref: "mongodb://poll:poll@mongo:27017/poll?authSource=poll"
+  ```
+  HealthCheck:
+  ```
+    Please check localhost:5000/health 
+  ```
+  Pre-start:
+  ```
+    Please use postman to import the data in mongo with below endpoint
+    POST/ locahost:5000/pollOperation --> the data is prepared is resouces folder
   ```
 
 HighLight In this project
