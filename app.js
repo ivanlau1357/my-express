@@ -61,6 +61,15 @@ class App {
         }
       });
     })
+
+    this.app.use((req, res, next) => {
+      if(req.method === 'OPTIONS') {
+        res.header('Access-Control-Allow-Origin', "*");
+        res.header('Access-Control-Allow-Headers', "Origin, X-Requested-With, Content-Type, Accepy, Authorization")
+        res.header('Access-Control-Allow-Methods', 'PUT, POST, PATCH', 'DELETE', 'GET', 'OPTIONS')
+        return res.status(200).send({});
+      }
+    });
   }
 }
 
