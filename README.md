@@ -17,15 +17,16 @@ To start this project, you can choose to use local or docker
   ```
   docker:
   ```
-  1. run docker-compose build
-  2. run docker-compose -p stock up -d
-               or
-  1. directly docker-compose up
+  1. run docker-compose build --no-cache
+  2. run docker-compose up
+
+  if you see mongoDB connection error, please check through mongoDB session and restart the container
   ```
 
   mongoDB:
   ```
-  1. After you start the docker, please use below comment to access mongoDB
+  1. After you start the docker, if showing connection error, please use below comment to add user permission to access mongoDB
+      docker ps --> find mongo Container ID
       docker exec -it [Container ID] bash
   2. Access mongoDB
       mongo
