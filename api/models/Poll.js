@@ -2,7 +2,6 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const PollSchema = new Schema({
-    name: { type: String, required: true },
     title: { type: String, required: true },
     publishedDate: { type: String, required: true },
     answer: { type: Object },
