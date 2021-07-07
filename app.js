@@ -4,6 +4,7 @@ const router = express.Router()
 const path = require('path');
 const logger = require('./loggerConfig/logger')
 const { routes } = require('./routeConfig/routes')
+const { Client } = require('@elastic/elasticsearch')
 const mongoose = require('mongoose');
 require('dotenv').config()
 
@@ -48,9 +49,16 @@ class App {
     }
   }
 
+  getElasticSearchClient() {
+    const elasticSearchHost = 'http://localhost:9200';
+    const esClient = new Client({ node: elasticSearchHost })
+    global.EsClient = esClient
+  }
+
   async startServer() {
     await this.loadRoutingConfigs()
     await this.connectMongoDB();
+    this.getElasticSearchClient();
 
     this.app.listen(5000, () => {
       // eslint-disable-next-line no-console

@@ -20,14 +20,15 @@
   },
   "homepage": "https://github.com/ivanlau1357/node-express-basic#readme",
   "dependencies": {
+    "@elastic/elasticsearch": "^7.13.0",
     "axios": "^0.21.1",
     "bluebird": "^3.7.2",
     "dotenv": "^10.0.0",
     "eslint": "^7.26.0",
     "eslint-config-airbnb-base": "^14.2.0",
-    "mongoose": "^5.12.7",
     "eslint-plugin-import": "^2.22.0",
     "express": "^4.17.1",
+    "mongoose": "^5.12.7",
     "nodemon": "^2.0.4",
     "winston": "^3.3.3"
   }
