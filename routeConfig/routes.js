@@ -7,5 +7,6 @@ module.exports = {
       'POST /pollOperation PollController.insertResources',
       'POST /vote PollController.vote',
       'GET /polls/:id PollController.findById',
+      'POST /vedioContentOperation VedioContentController.insertResources',
     ]
 }

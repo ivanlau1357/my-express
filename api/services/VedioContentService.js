@@ -1,4 +1,5 @@
 const VedioContent = require('../models/VedioContent');
+const ElasticSearchService = require('./elasticSearch/ElasticSearchService')
 const Promise = require("bluebird");
 
 class VedioContentService {
@@ -46,7 +47,7 @@ class VedioContentService {
 
     static async insertVedioContentList({vedioContentList}) {
       //add to elasticSearch index
-      
+      await ElasticSearchService.bulkInsert({index: 'vedioContent', vedioContentList})
       //add to mongoDB  
       const result = await VedioContent.insertMany({vedioContentList});
       return result;
