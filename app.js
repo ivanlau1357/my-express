@@ -50,7 +50,7 @@ class App {
   }
 
   getElasticSearchClient() {
-    const elasticSearchHost = 'http://localhost:9200';
+    const elasticSearchHost = process.env.ES_HOST || 'http://localhost:9200';
     const esClient = new Client({ node: elasticSearchHost })
     global.EsClient = esClient
   }

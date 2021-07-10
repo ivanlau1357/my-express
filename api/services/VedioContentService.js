@@ -47,20 +47,25 @@ class VedioContentService {
 
     static async insertVedioContentList({vedioContentList}) {
       //add to elasticSearch index
-      await ElasticSearchService.bulkInsert({index: 'vedioContent', vedioContentList})
+      await ElasticSearchService.bulkInsert({index: 'vedio-content', items: vedioContentList})
       //add to mongoDB  
       const result = await VedioContent.insertMany({vedioContentList});
       return result;
     }
 
-    // static async vote({pollId, label}) {
-    //   if(!pollId || !label) {
-    //     return null
-    //   }
-
-    //   const result = PollActiviryLog.vote({pollId, label})
-    //   return result;
-    // }
+    static async searchByFreeText({searchKey}) {
+      if(!searchKey) {
+        return [];
+      }
+      
+      const result = await ElasticSearchService.freeTextSearchByAllField({
+        index: 'vedio-content',
+        searchKey,
+        searchFields: ['title', 'summary', 'contentType', 'genre', 'category']
+      })
+    
+      return result || [];
+    }
   }
   
 module.exports = VedioContentService

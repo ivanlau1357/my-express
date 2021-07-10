@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 const VedioContentSchema = new Schema({
     title: { type: String, required: true },
     summary: { type: String, required: true },
-    contentType: {type: 'Movie' | 'Series', required: true },
+    contentType: {type: String, required: true },
     genre: { type: String, required: true },
     category: { type: String, required: true },
     casts: { type: Array },

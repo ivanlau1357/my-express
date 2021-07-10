@@ -23,12 +23,12 @@ class VedioContentController {
       return res.status(200).send(result);
     }
 
-    // static async vote(req, res) {
-    //   const { pollId, label } = req.body
-    //   const result = await PollService.vote({label, pollId})
-    //   res.header("Access-Control-Allow-Origin", "*");
-    //   return res.status(200).send(result); 
-    // }
+    static async search(req, res) {
+      const searchKey = req.query['q']
+      const result = await VedioContentService.searchByFreeText({searchKey})
+      res.header("Access-Control-Allow-Origin", "*");
+      return res.status(200).send(result); 
+    }
   }
   
 module.exports = VedioContentController
