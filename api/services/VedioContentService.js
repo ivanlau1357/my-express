@@ -46,11 +46,22 @@ class VedioContentService {
     // }
 
     static async insertVedioContentList({vedioContentList}) {
-      //add to elasticSearch index
-      await ElasticSearchService.bulkInsert({index: 'vedio-content', items: vedioContentList})
-      //add to mongoDB  
-      const result = await VedioContent.insertMany({vedioContentList});
-      return result;
+      //add to mongoDB
+      const results = await VedioContent.insertMany({vedioContentList});
+
+      const insertedList = results.map(vedioContent => {
+        const vedioContentObj = vedioContent.toJSON()
+        // !!!temporarily remove mongoose instance value --> might change to lodash pick
+        delete vedioContentObj['__v']
+        delete vedioContentObj['_id']
+        return {
+          ...vedioContentObj,
+          vedioContentId: vedioContent.id,
+        }
+      })
+
+      await ElasticSearchService.bulkInsert({index: 'vedio-content', items: insertedList})  
+      return results;
     }
 
     static async searchByFreeText({searchKey}) {
