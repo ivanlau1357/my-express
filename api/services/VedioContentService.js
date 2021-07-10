@@ -60,6 +60,7 @@ class VedioContentService {
         }
       })
 
+      // reference to mongoId with vedioContentId
       await ElasticSearchService.bulkInsert({index: 'vedio-content', items: insertedList})  
       return results;
     }
