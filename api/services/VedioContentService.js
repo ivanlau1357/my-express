@@ -56,7 +56,7 @@ class VedioContentService {
     }
 
     static async getVedioRecomendation({suggestionKey}) {
-      // sameple id: hyoWkHoBB8z5M3at1IrB
+      // sameple id: hyoWkHoBB8z5M3at1IrB Tc2llXoBJAItcERrIoRd
       if(!suggestionKey) {
         return []
       }
@@ -64,7 +64,7 @@ class VedioContentService {
       const result = await ElasticSearchService.recommendationSearch({
         index: 'vedio-content',
         suggestionKey,
-        searchFields: ['title', 'summary', 'category' ]
+        searchFields: ['title', 'summary', 'contentType', 'genre', 'category']
       })
 
       return result || [];

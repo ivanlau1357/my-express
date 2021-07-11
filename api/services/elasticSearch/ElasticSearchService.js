@@ -45,7 +45,7 @@ class ElasticSearchService {
                         fields: searchFields,
                         like: [{_id: suggestionKey}],
                         min_term_freq: 1,
-                        max_query_terms: 12,
+                        max_query_terms: 20,
                     }
                 }
             }
