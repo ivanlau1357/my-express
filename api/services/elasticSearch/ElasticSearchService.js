@@ -35,6 +35,26 @@ class ElasticSearchService {
         
         return body?.hits?.hits
     }
+
+    static async recommendationSearch({index, suggestionKey, searchFields}) {
+        const { body } = await EsClient.search({
+            index: index,
+            body: {
+                query: {
+                    more_like_this: {
+                        fields: searchFields,
+                        like: [{_id: suggestionKey}],
+                        min_term_freq: 1,
+                        max_query_terms: 12,
+                    }
+                }
+            }
+        })
+
+        console.log(body);
+
+        return body?.hits?.hits
+    }
 }
   
 module.exports = ElasticSearchService

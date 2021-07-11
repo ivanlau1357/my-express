@@ -13,25 +13,28 @@ const VedioContentSchema = new Schema({
 class VedioContent {
     static model = new mongoose.model('VedioContent', VedioContentSchema)
   
-    // static async listingPolls({limit = 25, page = 0}) {
-    //   let result;
-    //   try {
-    //     result = await this.model.find({}).skip(page*limit).limit(limit).sort({publishedDate: -1});
-    //   } catch (error) {
-    //     throw error;
-    //   }
-    //   return result
-    // }
+    static async listingVedio({limit = 25, page = 0, category, genre}) {
+      let result;
+      try {
+        result = await this.model.find({
+          ...(category ? {category} : {}),
+          ...(genre ? {genre} : {}),
+        }).skip(page*limit).limit(limit);
+      } catch (error) {
+        throw error;
+      }
+      return result
+    }
 
-    // static async findById({targetId}) {
-    //   let result;
-    //   try {
-    //     result = await this.model.findById(targetId)
-    //   } catch (error) {
-    //     throw error;
-    //   }
-    //   return result;
-    // }
+    static async findById({targetId}) {
+      let result;
+      try {
+        result = await this.model.findById(targetId)
+      } catch (error) {
+        throw error;
+      }
+      return result;
+    }
 
     static async insertMany({vedioContentList}) {
       if(!vedioContentList || !vedioContentList.length) {

@@ -3,47 +3,23 @@ const ElasticSearchService = require('./elasticSearch/ElasticSearchService')
 const Promise = require("bluebird");
 
 class VedioContentService {
-    // static async listingPolls({limit, page, voteInfo}) {
-    //   const result = await Poll.listingPolls({limit, page})
-
-    //   if(!voteInfo) {
-    //     return result;
-    //   }
+    static async listingVedio({limit, page, category, genre}) {
+      if(!category && !genre) {
+        return null;
+      }
       
-    //   const resultWithVoteInfo  = await Promise.map(result, async(poll) => {
-    //     const { id } = poll;
-    //     const voteInfo = await PollActiviryLog.getVoteInfo({pollId: id})
-    //     const massagedVoteInfo = voteInfo.reduce((acc, voteInfo) => {
-    //     return {
-    //         ...acc,
-    //         [voteInfo._id]: voteInfo.count,
-    //       }
-    //     }, {})
-    //     const pollObj = poll.toJSON()
-    //     return {
-    //       ...pollObj,
-    //       ...(Object.keys(massagedVoteInfo).length ? {voteInfo: massagedVoteInfo} : {}),
-    //     }        
-    //   })
-      
-    //   return resultWithVoteInfo;
-    // }
+      const result = await VedioContent.listingVedio({limit, page, category, genre})
 
-    // static async findById({targetId}) {
-    //   const result = await Poll.findById({targetId});
-    //   const voteInfo = await PollActiviryLog.getVoteInfo({pollId: targetId})
-    //   const massagedVoteInfo = voteInfo.reduce((acc, voteInfo) => {
-    //     return {
-    //       ...acc,
-    //       [voteInfo._id]: voteInfo.count,
-    //     }
-    //   }, {})
-    //   const pollObj = result.toJSON();
-    //   return {
-    //     ...pollObj,
-    //     ...(Object.keys(massagedVoteInfo).length ? {voteInfo: massagedVoteInfo} : {}),
-    //   };
-    // }
+      return result;
+    }
+
+    static async findById({targetId}) {
+      if (!targetId) {
+        return null;
+      }
+      const result = await VedioContent.findById({targetId});
+      return result 
+    }
 
     static async insertVedioContentList({vedioContentList}) {
       //add to mongoDB
@@ -76,6 +52,21 @@ class VedioContentService {
         searchFields: ['title', 'summary', 'contentType', 'genre', 'category']
       })
     
+      return result || [];
+    }
+
+    static async getVedioRecomendation({suggestionKey}) {
+      // sameple id: hyoWkHoBB8z5M3at1IrB
+      if(!suggestionKey) {
+        return []
+      }
+
+      const result = await ElasticSearchService.recommendationSearch({
+        index: 'vedio-content',
+        suggestionKey,
+        searchFields: ['title', 'summary', 'category' ]
+      })
+
       return result || [];
     }
   }

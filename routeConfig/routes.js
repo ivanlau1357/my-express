@@ -10,6 +10,9 @@ module.exports = {
       'POST /vote PollController.vote',
       'GET /polls/:id PollController.findById',
       'POST /vedioContentOperation VedioContentController.insertResources',
-      'GET /vedioSearch VedioContentController.search'
+      'GET /vedioSearch VedioContentController.search',
+      'GET /vedioContent VedioContentController.listingVedio',
+      'GET /vedioContent/:id VedioContentController.findById',
+      'GET /vedioRecommendation/:id VedioContentController.recommendation',
     ]
 }
