@@ -6,49 +6,76 @@ This Project is using below technology
  2.  express
  3.  docker
  4.  mongoDB
+ 5.  elastic search
+ 6.  kibana
 
-To start this project, you can choose to use local or docker
+Installation of this Project:
+  
+  docker: 
+  ```
+    1. docker-compose build
+    2. docker-compose up
+  ```
+  
+  healthCheck:
+  ```
+    1. localhost:9200 for elasticsearch
+    2. localhost:5601 for kibana
+    3. localhost:5000/health for application check
+  ```
+API Endpoint related:
+  
+```
+  'POST /vedioContentOperation',
+  'GET /vedioSearch',
+  'GET /vedioContent',
+  'GET /vedioContent/:id',
+  'GET /vedioRecommendation/:id',
+```
+PreStart(Please do after healthCheck):
 
-  local: 
-  ```
-  1. please run npm install before you start the project
-  2. run npm start
-  3. localhost:5000/health for the health check
-  ```
-  docker:
-  ```
-  1. run docker-compose build --no-cache
-  2. run docker-compose up
+```
+  Please use postman to import the data in mongo and elasticSearch with below endpoint
+  POST/ locahost:5000/vedioContentOperation --> the data is prepared is resouces folder
+```
 
-  if you see mongoDB connection error, please check through mongoDB session and restart the container
+Testing Step(require using postman):
+
+  For Testing Step 1, 2 are querying in mongoDB
+  For Testing Strp 3, 4 are querying in elastic search
+
+  Reason why storing in two platform 
+  ```
+    1. backfill prepare
+    2. Spearate using perpose
+        - simple query using mongoDB
+        - real-time search/aggregation will done in elastic search
   ```
 
-  mongoDB:
+  1. 'GET /vedioContent' 
+  This api will return vedio Content List with Genre & Category
   ```
-  1. After you start the docker, if showing connection error, please use below comment to add user permission to access mongoDB
-      docker ps --> find mongo Container ID
-      docker exec -it [Container ID] bash
-  2. Access mongoDB
-      mongo
-  3. Plz create user for access mongoDB
-      use poll
-      db.createUser(
-        {
-          user: "poll",
-          pwd: "poll",
-          roles: [ "readWrite", "dbAdmin" ]
-        }
-      )
-      ref: "mongodb://poll:poll@mongo:27017/poll?authSource=poll"
+    GET localhost:5000/vedioContent?genre=Hero
+    GET localhost:5000/vedioContent?category=Hero
+    GET localhost:5000/vedioContent?category=Hero&genre=Hero
   ```
-  HealthCheck:
+
+  2. 'GET /vedioContent/:id(mongo ObjectId)'
+  This api will return vedio Content By Id
   ```
-    Please check localhost:5000/health 
+    GET localhost:5000/vedioContent/${mongo ObjectId}
   ```
-  Pre-start:
+
+  3. 'GET /vedioSearch'
+  This api is for search api which query in elastic search
   ```
-    Please use postman to import the data in mongo with below endpoint
-    POST/ locahost:5000/pollOperation --> the data is prepared is resouces folder
+    GET localhost:5000/vedioSearch?q=Iron
+  ```
+
+  4. 'GET /vedioRecommendation/:id'
+  This api will return similar vedio content by pass the elastic search Id
+  ```
+    GET localhost:5000/vedioRecommendation/${elastic search Id}
   ```
 
 HighLight In this project
