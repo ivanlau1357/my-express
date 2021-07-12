@@ -32,7 +32,7 @@ API Endpoint related:
   'GET /vedioContent/:id',
   'GET /vedioRecommendation/:id',
 ```
-PreStart(Please do after healthCheck):
+PreStart (Please do after healthCheck):
 
 ```
   Please use postman to import the data in mongo and elasticSearch with below endpoint
@@ -41,7 +41,7 @@ PreStart(Please do after healthCheck):
 
 Testing Step(require using postman):
 
-  For Testing Step 1, 2 are querying in mongoDB
+  For Testing Step 1, 2 are querying in mongoDB<br />
   For Testing Strp 3, 4 are querying in elastic search
 
   Reason why storing in two platform 
@@ -52,7 +52,7 @@ Testing Step(require using postman):
         - real-time search/aggregation will done in elastic search
   ```
 
-  1. 'GET /vedioContent' 
+  1. 'GET /vedioContent' <br />
   This api will return vedio Content List with Genre & Category
   ```
     GET localhost:5000/vedioContent?genre=Hero
@@ -60,19 +60,19 @@ Testing Step(require using postman):
     GET localhost:5000/vedioContent?category=Hero&genre=Hero
   ```
 
-  2. 'GET /vedioContent/:id(mongo ObjectId)'
+  2. 'GET /vedioContent/:id(mongo ObjectId)' <br />
   This api will return vedio Content By Id
   ```
     GET localhost:5000/vedioContent/${mongo ObjectId}
   ```
 
-  3. 'GET /vedioSearch'
+  3. 'GET /vedioSearch' <br />
   This api is for search api which query in elastic search
   ```
     GET localhost:5000/vedioSearch?q=Iron
   ```
 
-  4. 'GET /vedioRecommendation/:id'
+  4. 'GET /vedioRecommendation/:id' <br />
   This api will return similar vedio content by pass the elastic search Id
   ```
     GET localhost:5000/vedioRecommendation/${elastic search Id}
