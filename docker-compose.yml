@@ -8,7 +8,11 @@ services:
     ports:
       - "5000:5000"
     environment:
-      DB_HOST: "mongodb://poll:poll@mongo:27017/poll?authSource=poll"
+      DB_HOST: "mongodb://mongo:27017/admin"
+      ES_HOST: "http://elasticsearch:9200"
+    restart: on-failure  
+    depends_on:
+      - elasticsearch  
     command: bash -c "nodemon app.js"
 
   mongo: 
@@ -22,7 +26,32 @@ services:
     image: "redis:alpine"
     ports:
       - "6379:6379"
+  
+  elasticsearch:
+    image: "docker.elastic.co/elasticsearch/elasticsearch:7.13.2"
+    container_name: elasticsearch
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    environment:
+      discovery.type: "single-node"
+    volumes:
+      - elasticsearch-data:/usr/share/elasticsearch/data
+  
+  kibana:
+    container_name: kibana
+    image: "docker.elastic.co/kibana/kibana:7.13.2"
+    restart: always
+    ports:
+      - "5601:5601"
+    environment:
+      ELASTICSEARCH_URL: "http://elasticsearch:9200"
+      ELASTICSEARCH_HOSTS: "http://elasticsearch:9200"
+    depends_on:
+      - elasticsearch  
 
 volumes:
   mongodb:
     driver: local
+  elasticsearch-data:
+    driver: local  
