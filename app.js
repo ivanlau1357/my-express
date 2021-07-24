@@ -5,7 +5,6 @@ const bodyParser = require('body-parser');
 const router = express.Router();
 // eslint-disable-next-line no-unused-vars
 const path = require('path');
-const { Client } = require('@elastic/elasticsearch');
 const mongoose = require('mongoose');
 const logger = require('./loggerConfig/logger');
 const { routes } = require('./routeConfig/routes');
@@ -51,16 +50,9 @@ class App {
     }
   }
 
-  getElasticSearchClient() {
-    const elasticSearchHost = process.env.ES_HOST || 'http://localhost:9200';
-    const esClient = new Client({ node: elasticSearchHost });
-    global.EsClient = esClient;
-  }
-
   async startServer() {
     await this.loadRoutingConfigs();
     await this.connectMongoDB();
-    this.getElasticSearchClient();
 
     this.app.listen(5000, () => {
       // eslint-disable-next-line no-console
