@@ -6,8 +6,6 @@ This Project is using below technology
  2.  express
  3.  docker
  4.  mongoDB
- 5.  elastic search
- 6.  kibana
 
 Installation of this Project:
   
@@ -19,64 +17,61 @@ Installation of this Project:
   
   healthCheck:
   ```
-    1. localhost:9200 for elasticsearch
-    2. localhost:5601 for kibana
-    3. localhost:5000/health for application check
+    1. localhost:5000/health for application check
   ```
 API Endpoint related:
   
 ```
-  'POST /vedioContentOperation',
-  'GET /vedioSearch',
-  'GET /vedioContent',
-  'GET /vedioContent/:id',
-  'GET /vedioRecommendation/:id',
+  'POST /wallet/deposit',s
+  'POST /wallet/withdraw',
+  'POST /wallet/sendMoney',
+  'GET /wallet/:id/balance',
+  'POST /wallet ',
+
+  doc:
+  *walletId(reference Mongo collection id) plz check for 'POST /wallet ' result
 ```
+
 PreStart (Please do after healthCheck):
 
 ```
-  Please use postman to import the data in mongo and elasticSearch with below endpoint
-  POST/ locahost:5000/vedioContentOperation --> the data is prepared is resouces folder
+  Please use postman to import the testing collection api from url
+  https://drive.google.com/file/d/1NQ-BvfcdsWUT7jbGEBc9GkppDbChRLhR/view?usp=sharing
+
+  Please using create wall api to create wallet for user
+  (Assume create wallet as valid registered users) 
 ```
 
-Testing Step(require using postman):
+Planning for this project:
+```
+  1. Wallet Apps needs to having login/User concept
+  2. Needs to have a compelete log for all transition
+  3. How to handle wallet balance? store in collection or real-time calculate?
+  4. How to handle platform and currency concept in this Wallet Apps
+  5. Needs similar to blockchain, how to apply blockchain concept in the project
+```
 
-  For Testing Step 1, 2 are querying in mongoDB<br />
-  For Testing Strp 3, 4 are querying in elastic search
+Decision making:
+```
+  1. To Be simple, using Wallet Model to represent User has wallet or not in this system
+  2. Using WalletTransactionLog Model to store all the transaction record
+  3. Handle wallet balance in real-time calculation, avoid db raising condiction
+  4. Currently not considering on platform and currency, if needs to consider, will do in Wallet Model
+  5. Apply data(transcation), prevHash and currHash in WalletTransactionLog Model
+```
 
-  Reason why storing in two platform 
-  ```
-    1. backfill prepare
-    2. Spearate using perpose
-        - simple query using mongoDB
-        - real-time search/aggregation will done in elastic search
-  ```
-
-  1. 'GET /vedioContent' <br />
-  This api will return vedio Content List with Genre & Category
-  ```
-    GET localhost:5000/vedioContent?genre=Hero
-    GET localhost:5000/vedioContent?category=Hero
-    GET localhost:5000/vedioContent?category=Hero&genre=Hero
-  ```
-
-  2. 'GET /vedioContent/:id(mongo ObjectId)' <br />
-  This api will return vedio Content By Id
-  ```
-    GET localhost:5000/vedioContent/${mongo ObjectId}
-  ```
-
-  3. 'GET /vedioSearch' <br />
-  This api is for search api which query in elastic search
-  ```
-    GET localhost:5000/vedioSearch?q=Iron
-  ```
-
-  4. 'GET /vedioRecommendation/:id' <br />
-  This api will return similar vedio content by pass the elastic search Id
-  ```
-    GET localhost:5000/vedioRecommendation/${elastic search Id}
-  ```
+Areas to be improved
+```
+  1. Codeing implementation not very like a reusable libaray coding level
+  2. Will having performance issue when WalletTransactionLog Model become scaled
+     solution: 
+     --> using redis to cache result, when write traffic revoke cache, next read traffic will cache new balance
+     --> store banlance in wallet as off-line calculation, daily corn-job to sync with Logs records
+  3. Currently with less security concept in this project.
+     thinking on:
+     --> Adding a login system with JWT token for authentication and authorization 
+  4. Needs Unit Test and Integration Test to cover all transactions method(due to time limitation)     
+```
 
 HighLight In this project
 
