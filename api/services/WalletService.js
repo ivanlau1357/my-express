@@ -1,5 +1,5 @@
 const Wallet = require('../models/Wallet');
-const WalletTransationLog = require('../models/WalletTransationLog');
+const WalletTransactionLog = require('../models/WalletTransactionLog');
 
 class WalletService {
   static async insertWalletList({ walletList }) {
@@ -7,12 +7,20 @@ class WalletService {
     return result;
   }
 
+  static async validateWallet({ walletId }) {
+    return Wallet.findOne({ walletId });
+  }
+
+  static async validatePayeeByPhone({ payee }) {
+    return Wallet.findByPhone({ phone: payee });
+  }
+
   static async deposit({ walletId, amount }) {
     if (!walletId || !amount) {
       return 'deposit require walletId & amout in requset body';
     }
 
-    const wallet = await Wallet.findOne({ walletId });
+    const wallet = await this.validateWallet({ walletId });
 
     if (!wallet) {
       return 'you dont register wallet in our system';
@@ -23,7 +31,7 @@ class WalletService {
       toWallet: walletId,
       amount,
     };
-    const result = await WalletTransationLog.deposit({ transactions });
+    const result = await WalletTransactionLog.addTransactionLog({ transactions });
 
     return result;
   }
@@ -32,13 +40,13 @@ class WalletService {
     if (!walletId) {
       return 'missing walletId';
     }
-    const wallet = await Wallet.findOne({ walletId });
+    const wallet = await this.validateWallet({ walletId });
 
     if (!wallet) {
       return 'you dont register wallet in our system';
     }
 
-    const result = await WalletTransationLog.balance({ walletId });
+    const result = await WalletTransactionLog.balance({ walletId });
 
     return result;
   }
@@ -59,7 +67,7 @@ class WalletService {
       toWallet: null,
       amount,
     };
-    const result = await WalletTransationLog.withdraw({ transactions });
+    const result = await WalletTransactionLog.addTransactionLog({ transactions });
 
     return result;
   }
@@ -71,7 +79,7 @@ class WalletService {
       return `Transactions! because your sending amount(${amount}) exceed than your balance(${currentbalance})`;
     }
 
-    const payeeWallet = await Wallet.findByPhone({ phone: payee });
+    const payeeWallet = await this.validatePayeeByPhone({ payee });
 
     if (!payeeWallet) {
       return 'payee wallet is not exist';
@@ -83,7 +91,7 @@ class WalletService {
       amount,
     };
 
-    const result = await WalletTransationLog.sendMoney({ transactions });
+    const result = await WalletTransactionLog.addTransactionLog({ transactions });
 
     return result;
   }

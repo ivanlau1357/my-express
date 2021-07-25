@@ -3,7 +3,7 @@ const SHA256 = require('crypto-js/sha256');
 
 const { Schema } = mongoose;
 
-const WalletTransationLogSchema = new Schema({
+const WalletTransactionLogSchema = new Schema({
   timestamp: { type: Date, default: Date.now },
   transactions: {
     fromWallet: { type: String, default: null },
@@ -14,18 +14,18 @@ const WalletTransationLogSchema = new Schema({
   hash: { type: String, require: true },
 });
 
-class WalletTransationLog {
-    static model = new mongoose.model('WalletTransationLog', WalletTransationLogSchema)
+class WalletTransactionLog {
+    static model = new mongoose.model('WalletTransactionLog', WalletTransactionLogSchema)
 
-    static async deposit({ transactions }) {
-      const walletTransation = new this.model({
+    static async addTransactionLog({ transactions }) {
+      const walletTransaction = new this.model({
         transactions,
       });
 
-      walletTransation.hash = this.calculateHash(walletTransation);
-      walletTransation.prevHash = await this.getPrevHash();
+      walletTransaction.hash = this.calculateHash(walletTransaction);
+      walletTransaction.prevHash = await this.getPrevHash();
 
-      return walletTransation.save();
+      return walletTransaction.save();
     }
 
     static async balance({ walletId }) {
@@ -49,28 +49,6 @@ class WalletTransationLog {
       return aggregation.length ? aggregation[0].balance : 0;
     }
 
-    static async withdraw({ transactions }) {
-      const walletTransation = new this.model({
-        transactions,
-      });
-
-      walletTransation.hash = this.calculateHash(walletTransation);
-      walletTransation.prevHash = await this.getPrevHash();
-
-      return walletTransation.save();
-    }
-
-    static async sendMoney({ transactions }) {
-      const walletTransation = new this.model({
-        transactions,
-      });
-
-      walletTransation.hash = this.calculateHash(walletTransation);
-      walletTransation.prevHash = await this.getPrevHash();
-
-      return walletTransation.save();
-    }
-
     static calculateHash({ timestamp, transactions, prevHash }) {
       return SHA256(timestamp + JSON.stringify(transactions) + prevHash).toString();
     }
@@ -81,4 +59,4 @@ class WalletTransationLog {
     }
 }
 
-module.exports = WalletTransationLog;
+module.exports = WalletTransactionLog;
