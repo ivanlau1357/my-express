@@ -22,7 +22,7 @@ Installation of this Project:
 API Endpoint related:
   
 ```
-  'POST /wallet/deposit',s
+  'POST /wallet/deposit',
   'POST /wallet/withdraw',
   'POST /wallet/sendMoney',
   'GET /wallet/:id/balance',
@@ -45,32 +45,61 @@ PreStart (Please do after healthCheck):
 Planning for this project:
 ```
   1. Wallet Apps needs to having login/User concept
+
   2. Needs to have a compelete log for all transition
-  3. How to handle wallet balance? store in collection or real-time calculate?
-  4. How to handle platform and currency concept in this Wallet Apps
-  5. Needs similar to blockchain, how to apply blockchain concept in the project
+
+  3. log structure how to define deposit, withdraw and sendMoney?
+
+  4. How to handle wallet balance? store in collection or real-time calculate?
+
+  5. How to handle platform and currency concept in this Wallet Apps?
+
+  6. Needs similar to blockchain, how to apply blockchain concept in the project
 ```
 
 Decision making:
 ```
   1. To Be simple, using Wallet Model to represent User has wallet or not in this system
+
   2. Using WalletTransactionLog Model to store all the transaction record
-  3. Handle wallet balance in real-time calculation, avoid db raising condiction
-  4. Currently not considering on platform and currency, if needs to consider, will do in Wallet Model
-  5. Apply data(transcation), prevHash and currHash in WalletTransactionLog Model
+
+  3. Designed a general structure to define log structure of deposit, withdraw and sendMoney using from, to and amount
+     Sample idea:
+     depostit:                     withdraw:                     sendMoney:
+     {                             {                             {
+       fromWallet: null,             fromWallel: {walletId},       fromWallet: {sender walletId},
+       toWallet: {walletId},         toWallet: null,               toWallet: {payee walletId},
+       amount: {amount},             amount: {amount},             amount: {amount},
+     }                             }                             }
+      
+  4. Handle wallet balance in real-time calculation, avoid db raising condiction
+     --> calculation: toWallet as plus amount, fromWallet as minus amount
+
+  5. Currently not considering on platform and currency, if needs to consider, will do in Wallet Model
+
+  6. Apply data(transcation), prevHash and currHash in WalletTransactionLog Model
 ```
 
 Areas to be improved
 ```
   1. Codeing implementation not very like a reusable libaray coding level
+
   2. Will having performance issue when WalletTransactionLog Model become scaled
      solution: 
      --> using redis to cache result, when write traffic revoke cache, next read traffic will cache new balance
      --> store banlance in wallet as off-line calculation, daily corn-job to sync with Logs records
+
   3. Currently with less security concept in this project.
      thinking on:
      --> Adding a login system with JWT token for authentication and authorization 
+
   4. Needs Unit Test and Integration Test to cover all transactions method(due to time limitation)     
+```
+
+Test plan:
+```
+  scenario/case:
+  https://docs.google.com/spreadsheets/d/16C3h3T1IEPg-xMneKwcCe848WnibyG1hAUYMCt3ABs8/edit?usp=sharing
 ```
 
 HighLight In this project
