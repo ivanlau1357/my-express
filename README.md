@@ -19,6 +19,17 @@ Installation of this Project:
   ```
     1. localhost:5000/health for application check
   ```
+
+PreStart (Please do after healthCheck):
+
+```
+  Please download below file and import the testing collection api into postman
+  https://drive.google.com/file/d/1NQ-BvfcdsWUT7jbGEBc9GkppDbChRLhR/view?usp=sharing
+
+  Please using create wall api to create wallet for user
+  (Assume create wallet as valid registered users) 
+```
+
 API Endpoint related:
   
 ```
@@ -28,18 +39,18 @@ API Endpoint related:
   'GET /wallet/:id/balance',
   'POST /wallet ',
 
-  doc:
-  *walletId(reference Mongo collection id) plz check for 'POST /wallet ' result
-```
+  Api payload structure:
 
-PreStart (Please do after healthCheck):
+  post body for below api endpoint
+  deposit, withdaraw:             sendMoney:
+  {                               {
+    walletId: MongoId,              walletId: MongoId,
+    amount: Number,                 payee: String(phone number),
+  }                                 amount: Number,
+                                  }
+  get balance :id reference MongoId.
 
-```
-  Please use postman to import the testing collection api from url
-  https://drive.google.com/file/d/1NQ-BvfcdsWUT7jbGEBc9GkppDbChRLhR/view?usp=sharing
-
-  Please using create wall api to create wallet for user
-  (Assume create wallet as valid registered users) 
+  *walletId(reference Mongo collection id) plz check for 'POST /wallet ' result                               
 ```
 
 Planning for this project:
